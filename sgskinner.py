@@ -21,7 +21,8 @@ from PySide2.QtWidgets import QApplication \
                             , QColorDialog \
                             , QLineEdit \
                             , QFileDialog \
-                            , QMessageBox
+                            , QMessageBox \
+                            , QSplitter
 from PySide2.QtGui import QIcon, QPixmap, QImage \
                         , QMouseEvent, QPaintEvent \
                         , QPainter, QBrush \
@@ -518,8 +519,7 @@ class MainWindow(QMainWindow):
         toolsMenu = self.menuBar().addMenu("&Tools")
         toolsMenu.addAction("Remove duplicates", self.on_tools_remove_duplicates)
 
-        root = QWidget()
-        root.setLayout(QHBoxLayout())
+        root = QSplitter()
 
         leftRoot = QWidget()
         leftRoot.setLayout(QVBoxLayout())
@@ -527,6 +527,8 @@ class MainWindow(QMainWindow):
         treeView = QTreeView()
         self.model = DocumentModel(self.document)
         self.filterModel = QSortFilterProxyModel()
+        self.filterModel.setSortRole(DocumentModel.FilePathRole)
+        self.filterModel.sort(0)
         self.filterModel.setFilterRole(DocumentModel.FilePathRole)
         self.filterModel.setSourceModel(self.model)
         treeView.setModel(self.filterModel)
@@ -589,9 +591,9 @@ class MainWindow(QMainWindow):
         rightRoot.layout().addWidget(checkBoxOriginalOnTop)
         rightRoot.layout().addWidget(buttonCopyOriginal)
 
-        root.layout().addWidget(leftRoot)
-        root.layout().addWidget(self.editor)
-        root.layout().addWidget(rightRoot)
+        root.addWidget(leftRoot)
+        root.addWidget(self.editor)
+        root.addWidget(rightRoot)
 
         self.setCentralWidget(root)
 
