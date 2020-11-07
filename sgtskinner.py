@@ -241,7 +241,7 @@ class Document(QObject):
 
     def setMinecraftJar(self, fn):
         self.jarFilename = fn
-        self.zf = zipfile.ZipFile('C:/Users/Thelin/AppData/Roaming/.technic/modpacks/vanilla/bin/minecraft.jar', 'r')
+        self.zf = zipfile.ZipFile(fn, 'r')
         self.allChanged.emit()
 
     def hasOriginalImage(self, filename):
